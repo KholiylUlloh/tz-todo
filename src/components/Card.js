@@ -5,7 +5,9 @@ const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
   const [modal, setModal] = useState(false);
   const [countdown, setCountdown] = useState(15)
   const [check, setCheck] = useState(false)
+  const [done, setDone] = useState(false)
   const timerId = useRef()
+  console.log(done);
   useEffect(() => {
     timerId.current = setInterval(() => {
       setCountdown(p => p - 1)
@@ -83,11 +85,17 @@ const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
         }
 
         <div style={{ position: "absolute", right: "20px", bottom: "20px" }}>
-          <i
+          <input style={{marginRight:"10px"}} type={"checkbox"} onChange={() => setDone(!done)}/>
+          {
+            done ?
+            null
+            :
+            <i
             class="far fa-edit mr-3"
             style={{ color: colors[index % 5].primaryColor, cursor: "pointer" }}
             onClick={() => setModal(true)}
           ></i>
+          }
           <i
             class="fas fa-trash-alt"
             style={{ color: colors[index % 5].primaryColor, cursor: "pointer" }}

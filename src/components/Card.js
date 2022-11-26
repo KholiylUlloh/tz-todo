@@ -1,8 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import EditTask from "../modals/EditTask";
 
 const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
   const [modal, setModal] = useState(false);
+  const [countdown, setCountdown] = useState(15)
+  const [check, setCheck] = useState(false)
+  const timerId = useRef()
+  useEffect(() => {
+    timerId.current = setInterval(() => {
+      setCountdown(p => p - 1)
+    },1000)
+    return () => clearInterval(timerId.current)
+  }, [])
+
+  useEffect(()=> {
+    if(countdown <= 0){
+      clearInterval(timerId.current)
+      setCheck(true)
+    }
+  })
 
   const colors = [
     {
@@ -62,6 +78,9 @@ const Card = ({ taskObj, index, deleteTask, updateListArray }) => {
         <p className="mt-3">{taskObj.Description}</p>
         <p>{taskObj.date}</p>
         <span>{taskObj.time}</span>
+        {
+          check ? <span>Time has expired</span>:<span>{countdown}</span>
+        }
 
         <div style={{ position: "absolute", right: "20px", bottom: "20px" }}>
           <i
